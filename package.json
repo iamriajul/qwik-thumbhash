@@ -1,6 +1,6 @@
 {
   "name": "qwik-thumbhash",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Thumbhash implementation for Qwik",
   "keywords": ["thumbhash", "blur", "thumb", "hash", "image", "qwik", "component"],
   "license": "MIT",

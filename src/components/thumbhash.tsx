@@ -1,21 +1,16 @@
 import {
   component$,
-  CSSProperties,
   QwikIntrinsicElements,
   useSignal,
   useVisibleTask$,
   VisibleTaskStrategy
 } from "@builder.io/qwik";
-import {thumbHashToDataURL} from "thumbhash";
+import {decodeThumbhashBase64ToDataUrl} from "../utils/base64";
 
 type ImgAttributes = Omit<QwikIntrinsicElements['img'], 'children'>;
 
 type Props = ImgAttributes & {
   hash: string;
-  height: number;
-  width: number;
-  /** Must be an object, not string */
-  style?: CSSProperties;
   /**
    * The strategy to use to determine when the "VisibleTask" should first execute.
    *
@@ -29,28 +24,22 @@ type Props = ImgAttributes & {
   strategy?: VisibleTaskStrategy;
 };
 
-export default component$<Props>(({hash, width, height, style, strategy, ...rest}) => {
+export default component$<Props>(({hash, strategy, ...rest}) => {
   const url = useSignal<string>();
 
   useVisibleTask$(ctx => {
-    ctx.track(() => hash && width && height);
+    ctx.track(() => hash);
 
-    const hashArray = Uint8Array.from(atob(hash), c => c.charCodeAt(0))
-    url.value = thumbHashToDataURL(hashArray);
-
+    // We're decoding in browser because the decoding in server would defeat the purpose of
+    // using thumbhash string which is very small. usually under 30 bytes.
+    // But when we decode it to dataURL it becomes more than 4KB.
+    url.value = decodeThumbhashBase64ToDataUrl(hash);
   }, {strategy: strategy});
 
   return (
     <img
       {...rest}
       src={url.value}
-      style={{
-        display: 'inline-block',
-        width: typeof width as unknown === 'number' ? `${width}px` : width,
-        height: typeof height as unknown === 'number' ? `${height}px` : height,
-        ...style as any,
-        position: 'relative'
-      }}
     />
   );
 });

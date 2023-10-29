@@ -15,66 +15,42 @@ npm install --save thumbhash qwik-thumbhash
 
 ## Usage
 
-### `<thumbhash />`
+### `<Thumbhash />`
 
 ```js
-import { thumbhash } from "qwik-thumbhash";
+import { Thumbhash } from "qwik-thumbhash";
 ```
 
 ### Description
 
-`thumbhash` component is the recommended way to render thumbhashes in your Qwik projects.
-It uses `thumbhashCanvas` and a wrapping `div` to scale the decoded image to your desired size. You may control the quality of the decoded image with `resolutionX` and `resolutionY` props.
+`Thumbhash` component is the recommended way to render thumbhashes in your Qwik projects.
 
 #### Props
 
-| name                              | description                                                                                                                                                                  |
-|-----------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `hash` (string)                   | The encoded thumbhash string.                                                                                                                                                 |
-| `width` (int \| string)           | Width (CSS) of the decoded image.                                                                                                                                            |
-| `height` (int \| string)          | Height (CSS) of the decoded image.                                                                                                                                           |
-| `resolutionX` (int)               | The X-axis resolution in which the decoded image will be rendered at. Recommended min. 32px. Large sizes (>128px) will greatly decrease rendering performance. (Default: 32) |
-| `resolutionY` (int)               | The Y-axis resolution in which the decoded image will be rendered at. Recommended min. 32px. Large sizes (>128px) will greatly decrease rendering performance. (Default: 32) |
-| `punch` (int)                     | Controls the "punch" value (~contrast) of the thumbhash decoding algorithm. (Default: 1)                                                                                      |
-| `strategy` (VisibleTaskStrategy)  | The strategy to use to determine when the "VisibleTask" should first execute.                                                                                                                                                     |
+| name                             | description                                                                   |
+|----------------------------------|-------------------------------------------------------------------------------|
+| `hash` (string)                  | The encoded (base64) thumbhash string.                                        |
+| `width` (int)                    | Width of the img element.                                                     |
+| `height` (int)                   | Height of the img element.                                                    |
+| `strategy` (VisibleTaskStrategy) | The strategy to use to determine when the "VisibleTask" should first execute. |
 
 
 #### Example
 
 ```jsx
-<thumbhash
-  hash="LEHV6nWB2yk8pyo0adR*.7kCMdnj"
+<Thumbhash
+  hash="1QcSHQRnh493V4dIh4eXh1h4kJUI"
   width={400}
   height={300}
-  resolutionX={32}
-  resolutionY={32}
-  punch={1}
 />
 ```
 
-### `<thumbhashCanvas />`
+### `decodeThumbhashBase64ToDataUrl` function
 
 ```js
-import { thumbhashCanvas } from "qwik-thumbhash";
-```
+import { decodeThumbhashBase64ToDataUrl } from "qwik-thumbhash";
 
-### Description
-
-`thumbhashCanvas` is the barebones implementation of a thumbhash string to a canvas. You may want to use it instead of the `thumbhash` component e.g. if you want to control the scaling yourself.
-
-#### Props
-
-| name            | description                                                                             |
-| --------------- | --------------------------------------------------------------------------------------- |
-| `hash` (string) | The encoded thumbhash string.                                                            |
-| `width` (int)   | Width of the decoded image.                                                             |
-| `height` (int)  | Height of the decoded image.                                                            |
-| `punch` (int)   | Controls the "punch" value (~contrast) of the thumbhash decoding algorithm. (Default: 1) |
-
-#### Example
-
-```jsx
-<thumbhashCanvas hash="LEHV6nWB2yk8pyo0adR*.7kCMdnj" width={400} height={300} punch={1} />
+const dataUrl = decodeThumbhashBase64ToDataUrl("1QcSHQRnh493V4dIh4eXh1h4kJUI");
 ```
 
 #### VisibleTaskStrategy
@@ -85,6 +61,12 @@ import { thumbhashCanvas } from "qwik-thumbhash";
 | `intersection-observer` | the task will first execute when the element is visible in the viewport, under the hood it uses the IntersectionObserver API.   |
 | `document-ready`        | document-ready: the task will first execute when the document is ready, under the hood it uses the document load event.         |
 | `document-idle`         | document-idle: the task will first execute when the document is idle, under the hood it uses the requestIdleCallback API.       |
+
+#### Note:
+We're decoding in browser because the decoding in server would defeat the purpose of
+using thumbhash string which is very small. usually under 30 bytes.
+But when we decode it to dataURL it becomes more than 4KB. So we're decoding it in browser.
+Transferring 30 bytes from server to browser is much faster than transferring 4KB.
 
 #### TODO:
 - [ ] Consider using the `worker$` (currently experimental) to decode the thumbhash string.
