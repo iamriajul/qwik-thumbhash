@@ -1,15 +1,13 @@
 import {
   component$,
-  QwikIntrinsicElements,
   useSignal,
   useVisibleTask$,
-  VisibleTaskStrategy
+  type PropsOf,
+  type VisibleTaskStrategy
 } from "@builder.io/qwik";
 import {decodeThumbhashBase64ToDataUrl} from "../utils/base64";
 
-type ImgAttributes = Omit<QwikIntrinsicElements['img'], 'children'>;
-
-type Props = ImgAttributes & {
+type Props = PropsOf<'img'> & {
   hash: string;
   /**
    * The strategy to use to determine when the "VisibleTask" should first execute.
