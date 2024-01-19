@@ -1,6 +1,6 @@
 {
   "name": "qwik-thumbhash",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Thumbhash implementation for Qwik",
   "keywords": [
     "thumbhash",
