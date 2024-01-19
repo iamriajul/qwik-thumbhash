@@ -2,6 +2,7 @@ import {defineConfig, type UserConfig} from "vite";
 import pkg from "./package.json";
 import { qwikVite } from "@builder.io/qwik/optimizer";
 import tsconfigPaths from "vite-tsconfig-paths";
+import { viteStaticCopy } from "vite-plugin-static-copy";
 
 const { dependencies = {}, peerDependencies = {} } = pkg as any;
 
@@ -26,6 +27,17 @@ export default defineConfig((): UserConfig => {
         ],
       },
     },
-    plugins: [qwikVite(), tsconfigPaths()],
+    plugins: [
+      qwikVite(),
+      tsconfigPaths(),
+      viteStaticCopy({
+        targets: [
+          {
+            src: "src/worker.ts",
+            dest: ".",
+          },
+        ],
+      }),
+    ],
   };
 });

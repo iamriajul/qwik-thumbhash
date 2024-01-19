@@ -62,6 +62,23 @@ const dataUrl = decodeThumbhashBase64ToDataUrl("1QcSHQRnh493V4dIh4eXh1h4kJUI");
 | `document-ready`        | document-ready: the task will first execute when the document is ready, under the hood it uses the document load event.         |
 | `document-idle`         | document-idle: the task will first execute when the document is idle, under the hood it uses the requestIdleCallback API.       |
 
+#### Experimental - IMG element with Thumbhash support.
+
+`ThumbhashImg` The component is just a wrapper around <img> tag, it just adds `data-hash` attribute to the img tag.
+And the `data-hash` attribute is consumed by `qwik-thumbhash/worker` to decode the thumbhash string and render the image while the actual image is being downloaded.
+
+```tsx
+import { ThumbhashImg } from "qwik-thumbhash";
+
+export default component$(() => {
+  return <ThumbhashImg
+    src="https://example.com/image.jpg"
+    hash="1QcSHQRnh493V4dIh4eXh1h4kJUI"
+    //... other props for <img> tag
+  />;
+});
+```
+
 #### Note:
 We're decoding in browser because the decoding in server would defeat the purpose of
 using thumbhash string which is very small. usually under 30 bytes.

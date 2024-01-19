@@ -1,6 +1,6 @@
 {
   "name": "qwik-thumbhash",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "Thumbhash implementation for Qwik",
   "keywords": [
     "thumbhash",
@@ -69,6 +69,7 @@
     "typescript": "^5.3.3",
     "undici": "^5.28.2",
     "vite": "^4.5.1",
+    "vite-plugin-static-copy": "^1.0.0",
     "vite-tsconfig-paths": "^4.3.1"
   }
 }

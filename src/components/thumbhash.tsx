@@ -7,7 +7,7 @@ import {
 } from "@builder.io/qwik";
 import {decodeThumbhashBase64ToDataUrl} from "../utils/base64";
 
-type Props = PropsOf<'img'> & {
+type Props = Omit<PropsOf<'img'>, 'src'> & {
   hash: string;
   /**
    * The strategy to use to determine when the "VisibleTask" should first execute.
