@@ -1,13 +1,14 @@
-import { defineConfig } from "vite";
+import {defineConfig, type UserConfig} from "vite";
 import pkg from "./package.json";
 import { qwikVite } from "@builder.io/qwik/optimizer";
 import tsconfigPaths from "vite-tsconfig-paths";
 
 const { dependencies = {}, peerDependencies = {} } = pkg as any;
-const makeRegex = (dep) => new RegExp(`^${dep}(/.*)?$`);
-const excludeAll = (obj) => Object.keys(obj).map(makeRegex);
 
-export default defineConfig(() => {
+const makeRegex = (dep: any) => new RegExp(`^${dep}(/.*)?$`);
+const excludeAll = (obj: any) => Object.keys(obj).map(makeRegex);
+
+export default defineConfig((): UserConfig => {
   return {
     build: {
       target: "es2020",
